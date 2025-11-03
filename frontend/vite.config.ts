@@ -1,0 +1,27 @@
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
+import tailwindcss from "@tailwindcss/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+// https://vite.dev/config/
+export default defineConfig({
+  server: {
+    cors: {
+      origin: "http://localhost:5000",
+    },
+    proxy: {
+      "/api/v1": {
+        target: "http://localhost:5000",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+  plugins: [react(), tailwindcss(), tsconfigPaths()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+});
