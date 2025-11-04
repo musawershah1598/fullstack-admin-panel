@@ -46,9 +46,9 @@ A production-ready administrative dashboard designed for modern web applications
 
 **Frontend**
 
-- ⚛️ React 18 with TypeScript
+- ⚛️ React 19 with TypeScript
 - ⚡ Vite for development and building
-- 🎨 TailwindCSS for styling
+- 🎨 TailwindCSS 4 for styling
 - 🧩 shadcn/ui component library
 - 🗺️ React Router for navigation
 - 📦 Zustand for state management

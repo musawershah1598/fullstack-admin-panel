@@ -10,13 +10,6 @@ export default defineConfig({
     cors: {
       origin: "http://localhost:5000",
     },
-    proxy: {
-      "/api/v1": {
-        target: "http://localhost:5000",
-        changeOrigin: true,
-        secure: false,
-      },
-    },
   },
   plugins: [react(), tailwindcss(), tsconfigPaths()],
   resolve: {

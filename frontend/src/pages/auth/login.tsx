@@ -1,3 +1,4 @@
+import { Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Navigate, NavLink, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
@@ -10,8 +11,8 @@ import { alertService } from "~/hooks/useAlert";
 import { useAuth } from "~/hooks/useAuth";
 import { authService } from "~/services/auth.service";
 import { useAuthStore } from "~/store/auth.store";
-import type { ValidationErrorObj } from "~/types/default";
-import type { LoginFormProps, LoginSuccessResponse } from "~/types/user";
+import type { ValidationErrorObj } from "~/types/default.type";
+import type { LoginFormProps, LoginSuccessResponse } from "~/types/user.type";
 
 const LoginPage = () => {
   const { isLoading, isAuthenticated } = useAuth();
@@ -31,8 +32,14 @@ const LoginPage = () => {
       if (res.status) {
         alertService.success("Success", res.message);
         const data = res.data as LoginSuccessResponse;
-        useAuthStore.getState().setAuth(data.user, data.tokens.accessToken);
-        navigate("/pages/dashboard");
+        useAuthStore
+          .getState()
+          .setAuth(
+            data.user,
+            data.tokens.accessToken,
+            data.tokens.refreshToken
+          );
+        navigate("/pages/dashboard/overview");
       } else {
         alertService.error("Error", res.message);
       }
@@ -48,12 +55,15 @@ const LoginPage = () => {
   }
 
   if (isAuthenticated) {
-    return <Navigate to={"/pages/dashboard"} replace />;
+    return <Navigate to={"/pages/dashboard/overview"} replace />;
   }
   return (
     <Card className="w-full max-w-xl">
       <CardContent className="p-12">
         <div className="text-center space-y-4">
+          <div className="flex justify-center">
+            <Lock className="size-16 text-primary" />
+          </div>
           <h1 className="font-extrabold text-4xl">Welcome To Admin Panel</h1>
           <p>Login to access to the dashboard</p>
         </div>

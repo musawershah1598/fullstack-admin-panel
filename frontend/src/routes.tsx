@@ -6,6 +6,59 @@ import LoginPage from "~/pages/auth/login.tsx";
 import GuestLayout from "~/layouts/guest.layout.tsx";
 import AuthLayout from "~/layouts/auth.layout.tsx";
 import DashboardPage from "~/pages/dashboard/index.tsx";
+import { LayoutDashboard, User, type LucideIcon } from "lucide-react";
+import { UserRole } from "~/types/user.type.ts";
+import ProfilePage from "~/pages/dashboard/settings/profile.tsx";
+
+const admin: Array<UserRole> = [UserRole.ADMIN, UserRole.USER];
+const user = [UserRole.USER];
+
+type Routes = {
+  key: string;
+  title: string;
+  path: string;
+  children: Array<{
+    key: string;
+    title: string;
+    icon: LucideIcon;
+    path: string;
+    type: Array<UserRole>;
+    status: boolean;
+  }>;
+};
+
+export const adminRoutes: Routes[] = [
+  {
+    key: "dashboard",
+    title: "Dashboard",
+    path: "dashboard",
+    children: [
+      {
+        key: "overview",
+        title: "Overview",
+        icon: LayoutDashboard,
+        path: "/overview",
+        type: admin,
+        status: true,
+      },
+    ],
+  },
+  {
+    key: "settings",
+    title: "Settings",
+    path: "settings",
+    children: [
+      {
+        key: "profile",
+        title: "Profile",
+        icon: User,
+        path: "/profile",
+        type: admin,
+        status: true,
+      },
+    ],
+  },
+];
 
 const router = createBrowserRouter([
   {
@@ -26,7 +79,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "pages/dashboard",
-        children: [{ index: true, Component: DashboardPage }],
+        children: [{ path: "overview", Component: DashboardPage }],
+      },
+      {
+        path: "pages/settings",
+        children: [{ path: "profile", Component: ProfilePage }],
       },
     ],
   },

@@ -1,13 +1,15 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { User } from "~/types/user.d.ts";
+import type { User } from "~/types/user.type";
 
 interface AuthState {
   user: User | null;
   accessToken: string | null;
+  refreshToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  setAuth: (user: User, accessToken: string) => void;
+  setAuth: (user: User, accessToken: string, refreshToken: string) => void;
+  setAccessToken: (accessToken: string) => void;
   clearAuth: () => void;
   setLoading: (isLoading: boolean) => void;
 }
@@ -17,19 +19,23 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       accessToken: null,
+      refreshToken: null,
       isAuthenticated: false,
       isLoading: true,
-      setAuth: (user, accessToken) =>
+      setAuth: (user, accessToken, refreshToken) =>
         set({
           user,
           accessToken,
+          refreshToken,
           isAuthenticated: true,
           isLoading: false,
         }),
+      setAccessToken: (accessToken) => set({ accessToken }),
       clearAuth: () =>
         set({
           user: null,
           accessToken: null,
+          refreshToken: null,
           isAuthenticated: false,
           isLoading: false,
         }),
@@ -40,6 +46,7 @@ export const useAuthStore = create<AuthState>()(
       partialize: (state) => ({
         user: state.user,
         accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
       }),
     }

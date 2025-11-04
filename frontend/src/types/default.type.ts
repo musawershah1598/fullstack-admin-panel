@@ -5,5 +5,5 @@ export type ValidationErrorObj = {
 export type ApiResponse = {
   status: boolean | number;
   message: string;
-  data?: ValidationErrorObj | Record<T>;
+  data?: ValidationErrorObj | Record<string, unknown>;
 };

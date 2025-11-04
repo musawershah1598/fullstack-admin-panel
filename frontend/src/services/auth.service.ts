@@ -1,18 +1,20 @@
+import { apiFetch } from "~/lib/api";
 import { useAuthStore } from "~/store/auth.store";
-import type { ValidationErrorObj } from "~/types/default";
+import type { ValidationErrorObj } from "~/types/default.type";
 import type {
   LoginFormProps,
   LoginResponse,
   LoginSuccessResponse,
   User,
-} from "~/types/user";
+} from "~/types/user.type";
 
 export const authService = {
   async login(data: LoginFormProps): Promise<LoginResponse> {
     try {
-      const res = await fetch(`/api/v1/auth/login`, {
+      const res = await apiFetch(`/auth/login`, {
         method: "POST",
         body: JSON.stringify(data),
+        skipAuth: true,
         headers: {
           "Content-Type": "application/json",
         },
@@ -42,13 +44,19 @@ export const authService = {
   async getCurrentUser(): Promise<User | null> {
     try {
       const token = useAuthStore.getState().accessToken;
+      const refreshToken = useAuthStore.getState().refreshToken;
 
       if (!token) {
         useAuthStore.getState().clearAuth();
         return null;
       }
 
-      const res = await fetch("/api/v1/auth/user", {
+      if (!refreshToken) {
+        useAuthStore.getState().clearAuth();
+        return null;
+      }
+
+      const res = await apiFetch("/auth/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,7 +69,7 @@ export const authService = {
         return null;
       }
 
-      useAuthStore.getState().setAuth(body.data as User, token);
+      useAuthStore.getState().setAuth(body.data as User, token, refreshToken);
       return body.data as User;
     } catch (error) {
       console.error("Get current user error:", error);
@@ -74,7 +82,7 @@ export const authService = {
     try {
       const token = useAuthStore.getState().accessToken;
 
-      await fetch("/api/v1/auth/logout", {
+      await apiFetch("/auth/logout", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -89,9 +97,9 @@ export const authService = {
     }
   },
 
-  async refreshToken() {
+  async refreshToken(): Promise<string | null> {
     try {
-      const res = await fetch("/api/v1/auth/refresh", {
+      const res = await apiFetch("/auth/refresh-token", {
         method: "POST",
         credentials: "include", // Send cookies
       });
@@ -103,7 +111,9 @@ export const authService = {
         return null;
       }
 
-      useAuthStore.getState().setAuth(body.data.user, body.data.accessToken);
+      useAuthStore
+        .getState()
+        .setAuth(body.data.user, body.data.accessToken, body.data.refreshToken);
       return body.data.accessToken;
     } catch (error) {
       console.error("Refresh token error:", error);
