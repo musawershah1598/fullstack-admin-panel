@@ -3,7 +3,8 @@ import { authService } from "~/services/auth.service";
 import { useEffect } from "react";
 
 export const useAuth = () => {
-  const { user, isAuthenticated, isLoading, setLoading } = useAuthStore();
+  const { user, isAuthenticated, isLoading, setLoading, setUser } =
+    useAuthStore();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -37,6 +38,7 @@ export const useAuth = () => {
     user,
     isAuthenticated,
     isLoading,
+    setUser,
     logout: authService.logout,
   };
 };

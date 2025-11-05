@@ -11,6 +11,7 @@ import routes from "@/routes";
 import { errorHandler } from "@/middlewares/error.middleware";
 import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
+import { enforceContentType } from "@/middlewares/contentType.middleware";
 
 const app: Application = express();
 
@@ -46,6 +47,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(enforceContentType);
 
 // Compression
 app.use(compression());

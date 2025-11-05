@@ -37,3 +37,16 @@ export type User = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type ProfileFormProps = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: UserRole;
+  status: boolean;
+};
+export type PasswordFormProps = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
