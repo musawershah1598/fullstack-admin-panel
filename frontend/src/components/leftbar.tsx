@@ -20,7 +20,7 @@ const LeftBarComponent = () => {
   };
   return (
     <Sidebar>
-      <SidebarHeader className="bg-white">
+      <SidebarHeader className="bg-white dark:bg-gray-900">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -37,7 +37,7 @@ const LeftBarComponent = () => {
       </SidebarHeader>
       <Separator />
 
-      <SidebarContent className="bg-white">
+      <SidebarContent className="bg-white dark:bg-gray-900">
         {adminRoutes.map((item) => {
           return (
             <SidebarGroup key={item.key}>
@@ -50,10 +50,10 @@ const LeftBarComponent = () => {
                       className={`rounded-xl`}
                     >
                       <SidebarMenuButton
-                        className={`cursor-pointer hover:bg-gray-100 text-gray-900 ${
+                        className={`cursor-pointer hover:bg-gray-100 hover:dark:bg-gray-800 text-gray-900 dark:text-gray-100 ${
                           location.pathname ==
                             "/pages/" + item.path + child.path &&
-                          "bg-gray-100 text-primary hover:bg-gray-100 font-bold"
+                          "bg-gray-100 dark:bg-gray-800 text-primary hover:bg-gray-100 font-bold"
                         }`}
                         onClick={() => handleNavigation(item.path + child.path)}
                       >

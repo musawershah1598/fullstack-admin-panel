@@ -10,7 +10,7 @@ const AuthLayout = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-gray-800">
         <Spinner className="size-16 text-primary" />
       </div>
     );
@@ -20,11 +20,11 @@ const AuthLayout = () => {
     return <Navigate to={"/pages/auth/login"} replace />;
   } else {
     return (
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-800">
         <SidebarProvider>
           <LeftBarComponent />
 
-          <SidebarInset className="bg-gray-50">
+          <SidebarInset className="bg-gray-50 dark:bg-gray-800">
             <TopBarComponent />
             <div className="p-8">
               <Outlet />

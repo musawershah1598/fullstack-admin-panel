@@ -1,4 +1,5 @@
 import { Bell, LogOut, Mail } from "lucide-react";
+import ThemeToggle from "~/components/theme-toggle";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { SidebarTrigger } from "~/components/ui/sidebar";
@@ -14,7 +15,7 @@ const TopBarComponent = () => {
     });
   };
   return (
-    <header className="py-4 px-2 border-b flex items-center justify-between bg-white">
+    <header className="py-4 px-2 border-b flex items-center justify-between bg-white dark:bg-gray-900">
       <div className="flex items-center">
         <SidebarTrigger className="size-8 cursor-pointer mr-2" />
 
@@ -22,6 +23,7 @@ const TopBarComponent = () => {
       </div>
 
       <div className="flex items-center gap-2">
+        <ThemeToggle />
         <Button variant={"outline"} size={"icon-lg"}>
           <Bell />
         </Button>
@@ -29,7 +31,7 @@ const TopBarComponent = () => {
           <Mail />
         </Button>
 
-        <Button variant={"secondary"} onClick={handleLogout}>
+        <Button onClick={handleLogout}>
           <LogOut />
           Logout
         </Button>
