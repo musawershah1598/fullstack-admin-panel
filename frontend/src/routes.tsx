@@ -6,12 +6,15 @@ import LoginPage from "~/pages/auth/login.tsx";
 import GuestLayout from "~/layouts/guest.layout.tsx";
 import AuthLayout from "~/layouts/auth.layout.tsx";
 import DashboardPage from "~/pages/dashboard/index.tsx";
-import { LayoutDashboard, User, type LucideIcon } from "lucide-react";
+import { LayoutDashboard, User, Users, type LucideIcon } from "lucide-react";
 import { UserRole } from "~/types/user.type.ts";
+
 import ProfilePage from "~/pages/dashboard/settings/profile.tsx";
+import UsersPage from "~/pages/dashboard/settings/users.tsx";
 
 const admin: Array<UserRole> = [UserRole.ADMIN, UserRole.USER];
-const user = [UserRole.USER];
+const onlyAdmin: Array<UserRole> = [UserRole.ADMIN];
+// const user = [UserRole.USER];
 
 type Routes = {
   key: string;
@@ -49,6 +52,14 @@ export const adminRoutes: Routes[] = [
     path: "settings",
     children: [
       {
+        key: "user-list",
+        title: "User List",
+        icon: Users,
+        path: "/users",
+        type: onlyAdmin,
+        status: true,
+      },
+      {
         key: "profile",
         title: "Profile",
         icon: User,
@@ -83,7 +94,10 @@ const router = createBrowserRouter([
       },
       {
         path: "pages/settings",
-        children: [{ path: "profile", Component: ProfilePage }],
+        children: [
+          { path: "users", Component: UsersPage },
+          { path: "profile", Component: ProfilePage },
+        ],
       },
     ],
   },

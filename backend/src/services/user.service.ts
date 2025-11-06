@@ -1,5 +1,9 @@
 import UserModel from "@/models/User.model";
 import {
+  IPaginatedResponse,
+  IPaginationOptions,
+} from "@/types/pagination.types";
+import {
   IPasswordChangeInput,
   IProfileInput,
   IUser,
@@ -7,6 +11,7 @@ import {
   UserRole,
 } from "@/types/user.types";
 import ApiError from "@/utils/ApiError";
+import PaginatedHelper from "@/utils/PaginatedResponse";
 
 class UserService {
   async profileUpdate(
@@ -59,6 +64,27 @@ class UserService {
     user.password = passwordData.newPassword;
     await user.save();
     return user.toJSON();
+  }
+
+  // fetch users
+  async fetchUsers(
+    query: Record<string, any>
+  ): Promise<IPaginatedResponse<IUser>> {
+    const options: IPaginationOptions =
+      PaginatedHelper.extractPaginationParams(query);
+    const filter: any = {};
+    if (query.role) {
+      filter.role = query.role;
+    }
+    if (query.isActive !== undefined) {
+      filter.isActive = query.isActive === "true";
+    }
+    const results = await PaginatedHelper.paginate(UserModel, {
+      options,
+      filter,
+      select: "-password -refreshToken",
+    });
+    return results;
   }
 }
 
