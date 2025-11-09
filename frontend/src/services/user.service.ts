@@ -1,48 +1,37 @@
 import { apiFetch } from "~/lib/api";
+import { getQueryParams } from "~/lib/utils";
 import type { ApiResponse } from "~/types/default.type";
-import type { PasswordFormProps, ProfileFormProps } from "~/types/user.type";
 
 export const userService = {
-  async updateProfile(data: ProfileFormProps): Promise<ApiResponse> {
+  async fetchUser(filters?: object): Promise<ApiResponse> {
     try {
-      const res = await apiFetch("/user/update-profile", {
-        body: JSON.stringify(data),
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const query = getQueryParams(filters || {}).toString();
+
+      console.log(query);
+      const res = await apiFetch(`/user?${query}`, {
+        method: "GET",
       });
-      const body = await res.json();
-      if (body.statusCode == 422) {
-        return { status: 422, message: "Validation failed", data: body.data };
-      }
-      if (body.statusCode == 200) {
-        return { status: true, message: body.message, data: body.data };
+      const data = await res.json();
+      if (data.statusCode == 200) {
+        return { status: true, message: data.message, data };
       } else {
-        return { status: false, message: body.message };
+        return { status: false, message: data.message };
       }
     } catch (error) {
       return { status: false, message: "Internal Server Error" };
     }
   },
 
-  async changePassword(data: PasswordFormProps): Promise<ApiResponse> {
+  async deleteUser(id: string): Promise<ApiResponse> {
     try {
-      const res = await apiFetch("/user/change-password", {
-        body: JSON.stringify(data),
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const res = await apiFetch(`/user/${id}`, {
+        method: "DELETE",
       });
-      const body = await res.json();
-      if (body.statusCode == 422) {
-        return { status: 422, message: "Validation failed", data: body.data };
-      }
-      if (body.statusCode == 200) {
-        return { status: true, message: body.message, data: body.data };
+      const data = await res.json();
+      if (data.statusCode == 200) {
+        return { status: true, message: data.message };
       } else {
-        return { status: false, message: body.message };
+        return { status: false, message: data.message };
       }
     } catch (error) {
       return { status: false, message: "Internal Server Error" };

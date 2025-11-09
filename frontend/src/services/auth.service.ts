@@ -1,10 +1,12 @@
 import { apiFetch } from "~/lib/api";
 import { useAuthStore } from "~/store/auth.store";
-import type { ValidationErrorObj } from "~/types/default.type";
+import type { ApiResponse, ValidationErrorObj } from "~/types/default.type";
 import type {
   LoginFormProps,
   LoginResponse,
   LoginSuccessResponse,
+  PasswordFormProps,
+  ProfileFormProps,
   User,
 } from "~/types/user.type";
 
@@ -119,6 +121,52 @@ export const authService = {
       console.error("Refresh token error:", error);
       useAuthStore.getState().clearAuth();
       return null;
+    }
+  },
+
+  async updateProfile(data: ProfileFormProps): Promise<ApiResponse> {
+    try {
+      const res = await apiFetch("/auth/update-profile", {
+        body: JSON.stringify(data),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const body = await res.json();
+      if (body.statusCode == 422) {
+        return { status: 422, message: "Validation failed", data: body.data };
+      }
+      if (body.statusCode == 200) {
+        return { status: true, message: body.message, data: body.data };
+      } else {
+        return { status: false, message: body.message };
+      }
+    } catch (error) {
+      return { status: false, message: "Internal Server Error" };
+    }
+  },
+
+  async changePassword(data: PasswordFormProps): Promise<ApiResponse> {
+    try {
+      const res = await apiFetch("/auth/change-password", {
+        body: JSON.stringify(data),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const body = await res.json();
+      if (body.statusCode == 422) {
+        return { status: 422, message: "Validation failed", data: body.data };
+      }
+      if (body.statusCode == 200) {
+        return { status: true, message: body.message, data: body.data };
+      } else {
+        return { status: false, message: body.message };
+      }
+    } catch (error) {
+      return { status: false, message: "Internal Server Error" };
     }
   },
 };

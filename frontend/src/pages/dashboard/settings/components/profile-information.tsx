@@ -13,7 +13,7 @@ import {
 import { Separator } from "~/components/ui/separator";
 import { alertService } from "~/hooks/useAlert";
 import { useAuth } from "~/hooks/useAuth";
-import { userService } from "~/services/user.service";
+import { authService } from "~/services/auth.service";
 import type { ValidationErrorObj } from "~/types/default.type";
 import { UserRole, type ProfileFormProps, type User } from "~/types/user.type";
 
@@ -35,7 +35,7 @@ const ProfileInformationComponent = () => {
     },
   });
   const profileUpdate = (val: ProfileFormProps) => {
-    userService.updateProfile(val).then((res) => {
+    authService.updateProfile(val).then((res) => {
       if (res.status == 422) {
         const err = res.data as ValidationErrorObj;
         Object.keys(err).forEach((fieldName) => {

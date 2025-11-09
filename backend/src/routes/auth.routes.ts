@@ -7,6 +7,10 @@ import {
   loginSchema,
   refreshTokenSchema,
 } from "@/validators/auth.validator";
+import {
+  changePasswordSchema,
+  profileSchema,
+} from "@/validators/user.validator";
 
 const router = Router();
 
@@ -19,5 +23,17 @@ router.post(
   authController.refreshToken
 );
 router.post("/logout", authenticate, authController.logout);
+
+router.post(
+  "/update-profile",
+  [authenticate, validate(profileSchema)],
+  authController.updateProfile
+);
+
+router.post(
+  "/change-password",
+  [authenticate, validate(changePasswordSchema)],
+  authController.changePassword
+);
 
 export default router;

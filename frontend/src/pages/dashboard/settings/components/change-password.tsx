@@ -5,7 +5,7 @@ import { Field, FieldError, FieldLabel } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { Separator } from "~/components/ui/separator";
 import { alertService } from "~/hooks/useAlert";
-import { userService } from "~/services/user.service";
+import { authService } from "~/services/auth.service";
 import type { ValidationErrorObj } from "~/types/default.type";
 import type { PasswordFormProps } from "~/types/user.type";
 
@@ -25,7 +25,7 @@ const ChangePasswordComponent = () => {
   });
 
   const handlePasswordChange = (val: PasswordFormProps) => {
-    userService.changePassword(val).then((res) => {
+    authService.changePassword(val).then((res) => {
       if (res.status == 422) {
         const err = res.data as ValidationErrorObj;
         Object.keys(err).forEach((fieldName) => {

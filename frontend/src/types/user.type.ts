@@ -1,4 +1,4 @@
-import type { ValidationErrorObj } from "~/types/default.type";
+import type { ApiQueryParams, ValidationErrorObj } from "~/types/default.type";
 
 export type LoginFormProps = {
   email: string;
@@ -24,7 +24,6 @@ export const UserRole = {
   ADMIN: "admin",
 } as const;
 
-// Add this type definition
 export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 
 export type User = {
@@ -49,4 +48,10 @@ export type PasswordFormProps = {
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
+};
+
+export type UserQueryParams = ApiQueryParams & {
+  role?: string;
+  isActive?: string;
+  sortBy?: string;
 };
