@@ -16,10 +16,12 @@ const admin: Array<UserRole> = [UserRole.ADMIN, UserRole.USER];
 const onlyAdmin: Array<UserRole> = [UserRole.ADMIN];
 // const user = [UserRole.USER];
 
-type Routes = {
+export type Routes = {
   key: string;
   title: string;
   path: string;
+  type: Array<UserRole>;
+  status: boolean;
   children: Array<{
     key: string;
     title: string;
@@ -35,6 +37,8 @@ export const adminRoutes: Routes[] = [
     key: "dashboard",
     title: "Dashboard",
     path: "dashboard",
+    type: admin,
+    status: true,
     children: [
       {
         key: "overview",
@@ -50,6 +54,8 @@ export const adminRoutes: Routes[] = [
     key: "settings",
     title: "Settings",
     path: "settings",
+    type: admin,
+    status: true,
     children: [
       {
         key: "user-list",

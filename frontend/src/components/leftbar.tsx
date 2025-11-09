@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { Separator } from "~/components/ui/separator";
 import {
   Sidebar,
@@ -10,11 +10,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
-import { adminRoutes } from "~/routes";
+import { useAuth } from "~/hooks/useAuth";
+import { adminRoutes, type Routes } from "~/routes";
+import type { User } from "~/types/user.type";
 
 const LeftBarComponent = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { user } = useAuth();
   const handleNavigation = (path: string) => {
     navigate("/pages/" + path);
   };
@@ -38,12 +40,26 @@ const LeftBarComponent = () => {
       <Separator />
 
       <SidebarContent className="bg-white dark:bg-gray-900">
-        {adminRoutes.map((item) => {
-          return (
-            <SidebarGroup key={item.key}>
-              <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-              <SidebarMenu>
-                {item.children.map((child) => {
+        {adminRoutes.map((item) => renderRoute(item, user, handleNavigation))}
+      </SidebarContent>
+    </Sidebar>
+  );
+};
+
+const renderRoute = (
+  item: Routes,
+  user: User | null,
+  handleNavigation: (path: string) => void
+) => {
+  if (item.status && user) {
+    if (item.type.includes(user.role)) {
+      return (
+        <SidebarGroup key={item.key}>
+          <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+          <SidebarMenu>
+            {item.children.map((child) => {
+              if (child.status) {
+                if (child.type.includes(user.role)) {
                   return (
                     <SidebarMenuItem
                       key={item.key + "-" + child.key}
@@ -62,14 +78,14 @@ const LeftBarComponent = () => {
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   );
-                })}
-              </SidebarMenu>
-            </SidebarGroup>
-          );
-        })}
-      </SidebarContent>
-    </Sidebar>
-  );
+                }
+              }
+            })}
+          </SidebarMenu>
+        </SidebarGroup>
+      );
+    }
+  }
 };
 
 export default LeftBarComponent;
