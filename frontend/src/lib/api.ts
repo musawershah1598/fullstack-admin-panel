@@ -68,6 +68,7 @@ export async function apiFetch(url: string, options: FetchOptions = {}) {
   }
 
   let response = await fetch(fullUrl, fetchOptions);
+  console.log(response.status);
 
   // If unauthorized and not already a retry, try to refresh token
   if (response.status === 401 && !skipAuth) {

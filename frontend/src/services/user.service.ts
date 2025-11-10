@@ -7,7 +7,6 @@ export const userService = {
     try {
       const query = getQueryParams(filters || {}).toString();
 
-      console.log(query);
       const res = await apiFetch(`/user?${query}`, {
         method: "GET",
       });
