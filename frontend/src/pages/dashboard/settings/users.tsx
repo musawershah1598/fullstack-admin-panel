@@ -1,4 +1,3 @@
-import { Edit } from "lucide-react";
 import { useEffect, useState } from "react";
 import BreadcrumbComponent from "~/components/breadcrumb";
 import ClearableSelect from "~/components/clearable-select";
@@ -8,7 +7,6 @@ import PaginationComponent, {
 } from "~/components/pagination";
 import TableSkeleton from "~/components/table-skeleton";
 import { Badge } from "~/components/ui/badge";
-import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import {
@@ -20,6 +18,7 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { alertService } from "~/hooks/useAlert";
+import EditUserDialog from "~/pages/dashboard/settings/components/edit-user";
 import { userService } from "~/services/user.service";
 import { UserRole, type User, type UserQueryParams } from "~/types/user.type";
 
@@ -61,6 +60,12 @@ const UsersPage = () => {
 
   const handlePageChange = (page: number) => {
     fetchUsers({ page });
+  };
+
+  const handleUserUpdate = (user: User) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((item) => (item._id === user._id ? user : item))
+    );
   };
 
   const handleDelete = async (id: string) => {
@@ -190,9 +195,10 @@ const UsersPage = () => {
                         )}
                       </TableCell>
                       <TableCell className="flex space-x-2">
-                        <Button size={"sm"}>
-                          <Edit />
-                        </Button>
+                        <EditUserDialog
+                          user={item}
+                          handleUpdate={handleUserUpdate}
+                        />
                         <DeleteDialog
                           title="Delete User"
                           description="Are you sure want to delete this user?"
