@@ -9,3 +9,10 @@ export interface INotification extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface INotificationData {
+  userId?: string;
+  title: string;
+  message: string;
+  link: string;
+}

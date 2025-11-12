@@ -6,11 +6,18 @@ import LoginPage from "~/pages/auth/login.tsx";
 import GuestLayout from "~/layouts/guest.layout.tsx";
 import AuthLayout from "~/layouts/auth.layout.tsx";
 import DashboardPage from "~/pages/dashboard/index.tsx";
-import { LayoutDashboard, User, Users, type LucideIcon } from "lucide-react";
+import {
+  Bell,
+  LayoutDashboard,
+  User,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import { UserRole } from "~/types/user.type.ts";
 
 import ProfilePage from "~/pages/dashboard/settings/profile.tsx";
 import UsersPage from "~/pages/dashboard/settings/users.tsx";
+import NotificationPage from "~/pages/dashboard/settings/notifications.tsx";
 
 const admin: Array<UserRole> = [UserRole.ADMIN, UserRole.USER];
 const onlyAdmin: Array<UserRole> = [UserRole.ADMIN];
@@ -66,6 +73,14 @@ export const adminRoutes: Routes[] = [
         status: true,
       },
       {
+        key: "notifications",
+        title: "Notifications",
+        icon: Bell,
+        path: "/notifications",
+        type: admin,
+        status: true,
+      },
+      {
         key: "profile",
         title: "Profile",
         icon: User,
@@ -102,6 +117,7 @@ const router = createBrowserRouter([
         path: "pages/settings",
         children: [
           { path: "users", Component: UsersPage },
+          { path: "notifications", Component: NotificationPage },
           { path: "profile", Component: ProfilePage },
         ],
       },

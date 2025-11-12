@@ -12,7 +12,12 @@ export const users = asyncHandler(async (req: Request, res: Response) => {
       new ApiResponse(200, results.data, results.message, results.metadata)
     );
 });
-
+export const updateUser = asyncHandler(async (req: Request, res: Response) => {
+  const result = await userService.updateUser(req.params.id, req.body);
+  res
+    .status(200)
+    .json(new ApiResponse(200, result, "User updated successfully"));
+});
 export const deleteUser = asyncHandler(async (req: Request, res: Response) => {
   await userService.deleteUser(req.params.id);
   res.status(200).json(new ApiResponse(200, {}, "User deleted successfully"));

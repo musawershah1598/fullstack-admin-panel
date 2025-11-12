@@ -3,7 +3,10 @@ import mongoose from "mongoose";
 
 const notificationSchema = new mongoose.Schema<INotification>(
   {
-    userId: String,
+    userId: {
+      type: String,
+      default: null,
+    },
     title: {
       type: String,
       required: true,
@@ -21,7 +24,7 @@ const notificationSchema = new mongoose.Schema<INotification>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 notificationSchema.methods.toJSON = function () {
@@ -30,5 +33,5 @@ notificationSchema.methods.toJSON = function () {
 
 export default mongoose.model<INotification>(
   "Notification",
-  notificationSchema
+  notificationSchema,
 );

@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { alertService } from "~/hooks/useAlert";
-import { authService } from "~/services/auth.service";
+import { userService } from "~/services/user.service";
 import type { ValidationErrorObj } from "~/types/default.type";
 import { UserRole, type ProfileFormProps, type User } from "~/types/user.type";
 
@@ -48,7 +48,7 @@ const EditUserDialog = ({ user, handleUpdate }: EditUserDialogProps) => {
   });
 
   const onSubmit = (val: ProfileFormProps) => {
-    authService.updateProfile(val).then((res) => {
+    userService.updateUser(user._id, val).then((res) => {
       if (res.status == 422) {
         const err = res.data as ValidationErrorObj;
         Object.keys(err).forEach((fieldName) => {
