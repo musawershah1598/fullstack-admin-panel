@@ -18,6 +18,7 @@ import { UserRole } from "~/types/user.type.ts";
 import ProfilePage from "~/pages/dashboard/settings/profile.tsx";
 import UsersPage from "~/pages/dashboard/settings/users.tsx";
 import NotificationPage from "~/pages/dashboard/settings/notifications.tsx";
+import NotFoundPage from "~/pages/dashboard/not-found.tsx";
 
 const admin: Array<UserRole> = [UserRole.ADMIN, UserRole.USER];
 const onlyAdmin: Array<UserRole> = [UserRole.ADMIN];
@@ -119,6 +120,7 @@ const router = createBrowserRouter([
           { path: "users", Component: UsersPage },
           { path: "notifications", Component: NotificationPage },
           { path: "profile", Component: ProfilePage },
+          { path: "*", Component: NotFoundPage },
         ],
       },
     ],

@@ -4,11 +4,11 @@ import notificationService from "@/services/notification.service";
 import ApiResponse from "@/utils/ApiResponse";
 
 export const index = asyncHandler(async (req: Request, res: Response) => {
-  const results = await notificationService.index(req.query);
+  const results = await notificationService.index(req.query, req.user?.id);
   res
     .status(200)
     .json(
-      new ApiResponse(200, results.data, results.message, results.metadata),
+      new ApiResponse(200, results.data, results.message, results.metadata)
     );
 });
 
@@ -20,5 +20,13 @@ export const store = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const readNotification = asyncHandler(
-  async (req: Request, res: Resposne) => {},
+  async (req: Request, res: Response) => {
+    const id = req.query.id as string | undefined;
+    if (!id) {
+    }
+    const results = await notificationService.readNotificaton(id, req.user?.id);
+    res
+      .status(200)
+      .json(new ApiResponse(200, results, "Notification read successfully"));
+  }
 );

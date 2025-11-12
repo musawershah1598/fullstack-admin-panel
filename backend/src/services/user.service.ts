@@ -6,7 +6,7 @@ import {
 import { IProfileInput, IUser } from "@/types/user.types";
 import ApiError from "@/utils/ApiError";
 import PaginatedHelper from "@/utils/PaginatedResponse";
-import mongoose, { isValidObjectId } from "mongoose";
+import { isValidObjectId } from "mongoose";
 
 class UserService {
   // fetch users

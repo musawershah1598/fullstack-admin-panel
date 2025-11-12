@@ -1,4 +1,5 @@
-import { Bell, LogOut, Mail, Search } from "lucide-react";
+import { LogOut, Search } from "lucide-react";
+import NotificationButton from "~/components/notification-button";
 import { CommandMenu } from "~/components/page-search-dialog";
 import ThemeToggle from "~/components/theme-toggle";
 import { Button } from "~/components/ui/button";
@@ -39,12 +40,7 @@ const TopBarComponent = () => {
 
       <div className="flex items-center gap-2">
         <ThemeToggle />
-        <Button variant={"outline"} size={"icon-lg"}>
-          <Bell />
-        </Button>
-        <Button variant="outline" size={"icon-lg"}>
-          <Mail />
-        </Button>
+        <NotificationButton />
 
         <Button onClick={handleLogout}>
           <LogOut />
